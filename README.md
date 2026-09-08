@@ -77,7 +77,7 @@ Regression tests cover tax calculations, missing values, peers, composition, and
 
 ## GitHub → Vercel
 
-Connect this repository to the existing **nc-municipal-finance-explorer** Vercel project, using **main** as the production branch and the repository root as the application root.
+This repository is connected to the **nc-municipal-finance-explorer** Vercel project. Pushes to **main** deploy to production using the repository root as the application root. The following steps document how to reproduce this setup.
 
 1. Open Vercel → Project → **Settings → Git** and connect the GitHub repository.
 2. Keep the **Next.js** framework and `main` production branch.
