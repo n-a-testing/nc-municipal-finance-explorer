@@ -127,6 +127,8 @@ export function SpendingDonut({ row }: { row: FinanceRow }) {
   </section>
   const slices = BROAD_FUNCTIONS.map(({ key, label, color }) => ({ name: label, value: row[key]!, fill: color }))
   const sum = slices.reduce((total, slice) => total + slice.value, 0)
+  // Explicit compact formatting avoids ICU differences between server and browser.
+  const totalLabel = sum >= 1e9 ? `$${(sum / 1e9).toFixed(1)}B` : sum >= 1e6 ? `$${(sum / 1e6).toFixed(1)}M` : sum >= 1e3 ? `$${(sum / 1e3).toFixed(1)}K` : `$${sum.toFixed(0)}`
   return <section className="nw-city-spending" aria-label={`${row.municipality} spending categories, fiscal year ${row.fiscal_year}`}>
     <h3>Where the money goes</h3>
     <div className="nw-donut-wrap">
@@ -140,7 +142,7 @@ export function SpendingDonut({ row }: { row: FinanceRow }) {
           <Pie data={slices} dataKey="value" nameKey="name" innerRadius={45} outerRadius={65} stroke="white" strokeWidth={2} startAngle={90} endAngle={-270} isAnimationActive={false} />
         </PieChart>
       </ChartContainer>
-      <div className="nw-donut-center" aria-hidden="true"><strong>{shortValue(sum)}</strong><span>FY {row.fiscal_year}</span></div>
+      <div className="nw-donut-center" aria-hidden="true"><strong>{totalLabel}</strong><span>FY {row.fiscal_year}</span></div>
     </div>
     <ul className="nw-donut-legend">
       {slices.map((slice) => <li key={slice.name} title={formatValue(slice.value, "money")}><span><i style={{ background: slice.fill }} />{slice.name}</span><b>{(slice.value / sum * 100).toFixed(1)}%</b></li>)}
