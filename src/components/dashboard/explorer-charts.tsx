@@ -3,7 +3,7 @@
 import { useId } from "react"
 import {
   Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, LabelList,
-  Line, LineChart, ReferenceLine, XAxis, YAxis, type TooltipContentProps,
+  Line, LineChart, Pie, PieChart, ReferenceLine, XAxis, YAxis, type TooltipContentProps,
 } from "recharts"
 import { ChartContainer, ChartTooltip, type ChartConfig } from "@/components/ui/chart"
 import { formatValue, type FinanceRow, type MetricOption, type NumericKey } from "@/lib/finance"
@@ -117,4 +117,34 @@ export function CompositionChart({ rows }: { rows: FinanceRow[] }) {
     <Legend items={BROAD_FUNCTIONS.map(({ label, color }) => ({ name: label, color }))} />
     {data.length < rows.length && <p className="chart-footnote">Excluded: {rows.filter((row) => !composition(row)).map((row) => row.municipality).join(", ")} — incomplete or unreconciled broad categories.</p>}
   </>
+}
+
+export function SpendingDonut({ row }: { row: FinanceRow }) {
+  const shares = composition(row)
+  if (!shares) return <section className="nw-city-spending">
+    <h3>Where the money goes</h3>
+    <p className="nw-donut-unavailable">Not reported as a complete breakdown. Categories are missing or do not reconcile with total spending.</p>
+  </section>
+  const slices = BROAD_FUNCTIONS.map(({ key, label, color }) => ({ name: label, value: row[key]!, fill: color }))
+  const sum = slices.reduce((total, slice) => total + slice.value, 0)
+  return <section className="nw-city-spending" aria-label={`${row.municipality} spending categories, fiscal year ${row.fiscal_year}`}>
+    <h3>Where the money goes</h3>
+    <div className="nw-donut-wrap">
+      <ChartContainer config={emptyConfig} className="nw-city-donut">
+        <PieChart accessibilityLayer>
+          <ChartTooltip content={({ active, payload }) => {
+            if (!active || !payload?.length) return null
+            const slice = payload[0].payload as typeof slices[number]
+            return <div className="data-tooltip"><strong>{slice.name}</strong><div><b>{formatValue(slice.value, "money")}</b></div><div>{(slice.value / sum * 100).toFixed(1)}% of reported categories</div></div>
+          }} />
+          <Pie data={slices} dataKey="value" nameKey="name" innerRadius={45} outerRadius={65} stroke="white" strokeWidth={2} startAngle={90} endAngle={-270} isAnimationActive={false} />
+        </PieChart>
+      </ChartContainer>
+      <div className="nw-donut-center" aria-hidden="true"><strong>{shortValue(sum)}</strong><span>FY {row.fiscal_year}</span></div>
+    </div>
+    <ul className="nw-donut-legend">
+      {slices.map((slice) => <li key={slice.name} title={formatValue(slice.value, "money")}><span><i style={{ background: slice.fill }} />{slice.name}</span><b>{(slice.value / sum * 100).toFixed(1)}%</b></li>)}
+    </ul>
+    <p className="nw-donut-caption">Share of reported categories</p>
+  </section>
 }

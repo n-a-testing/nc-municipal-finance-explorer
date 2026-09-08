@@ -1350,6 +1350,20 @@
   .nw-intro h1 { font-size: 33px; }
   .nw-section h2 { font-size: 26px; }
 }
+.nw-city-spending { border-top: 1px solid #e2e5ea; padding: 17px 0 18px; }
+.nw-city-spending h3 { color: var(--nw-ink); font-size: 12px; font-weight: 650; letter-spacing: -.1px; }
+.nw-donut-wrap { position: relative; width: 148px; margin: 8px auto 12px; }
+.nw-city-spending .nw-city-donut { width: 148px; height: 148px; aspect-ratio: 1; }
+.nw-donut-center { position: absolute; inset: 0; pointer-events: none; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.nw-donut-center strong { font-size: 15px; font-weight: 650; color: var(--nw-ink); font-variant-numeric: tabular-nums; }
+.nw-donut-center span { font-size: 10px; color: var(--nw-muted); margin-top: 3px; }
+.nw-donut-legend { display: grid; gap: 7px; list-style: none; padding: 0; margin: 0; }
+.nw-donut-legend li { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; font-size: 10px; color: var(--nw-muted); }
+.nw-donut-legend li > span { display: flex; align-items: center; gap: 6px; }
+.nw-donut-legend i { width: 6px; height: 6px; border-radius: 2px; flex-shrink: 0; }
+.nw-donut-legend b { font-weight: 550; color: var(--nw-ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.nw-donut-caption { font-size: 9px; color: var(--nw-muted); margin-top: 12px; }
+.nw-donut-unavailable { color: var(--nw-muted); font-size: 12px; line-height: 1.6; padding-block: 20px; }
 @media (prefers-reduced-motion: reduce) {
   .nw-app * {
     transition: none !important;

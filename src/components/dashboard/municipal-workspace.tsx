@@ -46,6 +46,7 @@ import {
   BalanceChart,
   CompositionChart,
   Sparkline,
+  SpendingDonut,
 } from "./explorer-charts";
 import {
   type FinanceRow,
@@ -498,6 +499,7 @@ export function MunicipalWorkspace({ data }: { data: FinanceRow[] }) {
                   <span>Tax / $100</span>
                   <b>{shortValue(r.property_tax_rate, "rate")}</b>
                 </div>
+                <SpendingDonut row={r} />
               </Card>
             ))}
           </div>
